@@ -11,7 +11,6 @@ class Employee::AttendanceRequestsController < ApplicationController
   end
 
   def create
-    binding.pry
     # シフト申請、勤怠情報、通知をまとめて登録するためトランザクション処理
     ActiveRecord::Base.transaction do
       schedule = current_employee.schedules.create!(
