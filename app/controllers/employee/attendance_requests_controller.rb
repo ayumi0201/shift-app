@@ -11,12 +11,13 @@ class Employee::AttendanceRequestsController < ApplicationController
   end
 
   def create
+    binding.pry
     # シフト申請、勤怠情報、通知をまとめて登録するためトランザクション処理
     ActiveRecord::Base.transaction do
-      schedule = Schedule.new(schedules_params)
-      schedule.employee_id = current_employee.id
-      schedule.save!
-
+      schedule = current_employee.schedules.create!(
+        starting_time: "#{params[:attendance_request][:starting_date]} #{params[:attendance_request][:starting_time]}",
+        closing_time: "#{params[:attendance_request][:starting_date]} #{params[:attendance_request][:closing_time]}"
+      )
       attendance_request = schedule.build_attendance_request(attendance_requests_params)
       attendance_request.save!
 
@@ -37,14 +38,7 @@ class Employee::AttendanceRequestsController < ApplicationController
       params.require(:attendance_request).permit(:state)
     end
 
-    def schedules_params # rubocop:disable Metrics/AbcSize
-      carry_time = DateTime.new(params[:attendance_request][:"starting_time(1i)"].to_i, params[:attendance_request][:"starting_time(2i)"].to_i,
-                                params[:attendance_request][:"starting_time(3i)"].to_i, params[:attendance_request][:"starting_time(4i)"].to_i,
-                                params[:attendance_request][:"starting_time(5i)"].to_i)
-      soup_time = DateTime.new(params[:attendance_request][:"closing_time(1i)"].to_i, params[:attendance_request][:"closing_time(2i)"].to_i,
-                               params[:attendance_request][:"closing_time(3i)"].to_i, params[:attendance_request][:"closing_time(4i)"].to_i,
-                               params[:attendance_request][:"closing_time(5i)"].to_i)
-      params[:attendance_request].merge!(starting_time: carry_time, closing_time: soup_time)
-      params.require(:attendance_request).permit(:starting_time, :closing_time)
+    def schedules_params
+      params.require(:attendance_request).permit(:starting_date, :starting_time, :closing_time)
     end
 end
