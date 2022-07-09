@@ -1,40 +1,11 @@
 # 環境構築
 
-## GitHubにリモートリポジトリを作成
-- `Initialize this repository with:` は以下を指定する
-  - `Add a README file`にチェックを入れる
-  - Add .gitignore下のセレクトボックスで`.gitignore template: Rails`を選択
-- リポジトリ作成後ローカルにクローンする
-***
-## ローカルにクローンする方法
-リモートリポジトリで`code▼`を選択しHTTPSかSSHをコピー<br>
-ローカルで作成したいディレクトリまで移動し以下を入力<br>
-- HTTPSの場合
-```
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
-```
-- SSHの場合
-```
-git clone git@github.com:/YOUR-USERNAME/YOUR-REPOSITORY
-```
-***
 ## アプリを作成
-バージョンは、Rails6系のうち最新を使用<br>
-※ リモートリポジトリをクローンしたディレクトリで実行すること
-- 最新のバージョンをインストール
-```
-gem install rails -v 6.1.6
-```
-- バージョンの確認コマンド
-```
-gem list rails
-```
+バージョンは、Rails6系のうち最新を使用
 - アプリを作成
 ```
 rails _6.1.6_ new . --database=postgresql --skip-bundle --skip-test
 ```
-rails newの際に、README、.gitignoreを更新するか聞かれるので
-  README → Yキー、.gitignore → nキーを入力する
 - Gemのインストール
 ```
 bundle install
@@ -45,29 +16,16 @@ bundle install
 ```
 brew install postgresql
 ```
-- バージョンの確認コマンド
-```
-postgres --version
-```
-- postgresqlの起動コマンド
+- 起動コマンド
 ```
 brew services start postgresql
 ```
 ### postgresqlを`postgres`コマンドで起動できるようPGDATA設定
-- ターミナルで以下を実行
-```
-vi ~/.zshrc
-```
-- 開いたファイルに以下の環境変数を追記
+- 環境変数を設定ファイル(`~/.zshrc`)に記載
 ```
 export PGDATA='/usr/local/var/postgres'
 ```
-- 変更内容を反映させる
-```
-source ~./zshrc
-```
-※ ターミナルでbashを使っている場合 `.zshrc` → `.bashrc`に変更すること
-- postgresqlの起動コマンド(短縮)
+- 起動コマンド(短縮)
 ```
 postgres
 ```
@@ -90,42 +48,29 @@ postgresql立ち上げ時はスーパーユーザー`postgres`(全権限付与)<
 ```
 psql -d postgres
 ```
-- ロールを作成
+- ロールを作成（ログイン、DB作成の権限付与）
 ```
-CREATE ROLE 名前;
+CREATE ROLE 名前 LOGIN CREATEDB;
 ```
 - ロールが作成できているか一覧表示
 ```
 \du
 ```
-#### ログイン権限を渡す
-- ロール作成時にログイン権限を渡す
-```
-CREATE ROLE 名前 LOGIN;
-　　or
-CREATE USER 名前;
-```
-※ どちらかのコマンドを実行。両方のコマンドを実行すると「既にユーザーが存在している」とエラーが出るので注意
-- 既存のロールにログイン権限を渡す
-```
-ALTER ROLE 名前 LOGIN;
-```
-#### DB作成の権限を渡す
-- ロール作成時にDB作成の権限を渡す
-```
-CREATE ROLE 名前 CREATEDB;
-```
-- 既存のロールにDB作成の権限を渡す
-```
-ALTER ROLE 名前 CREATEDB;
-```
-
 ***
-### データベース作成
+### データベース作成から起動まで
+- データベース作成
 ```
 bundle exec rails db:create
 ```
-### 起動し`localhost:3000`へアクセス
+- マイグレーション実行
+```
+bundle exec rails db:migrate
+```
+- シードデータ作成
+```
+bundle exec rails db:seed
+```
+-  起動し`localhost:3000`へアクセス
 ```
 bundle exec rails s
 ```
