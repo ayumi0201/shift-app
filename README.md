@@ -1,11 +1,5 @@
 # 環境構築
 
-## アプリを作成
-バージョンは、Rails6系のうち最新を使用
-- アプリを作成
-```
-rails _6.1.6_ new . --database=postgresql --skip-bundle --skip-test
-```
 - Gemのインストール
 ```
 bundle install
@@ -52,6 +46,7 @@ psql -d postgres
 ```
 CREATE ROLE 名前 LOGIN CREATEDB;
 ```
+※ 名前は`config/database.yml`の`username`に記載されているものを使用する<br>
 - ロールが作成できているか一覧表示
 ```
 \du
