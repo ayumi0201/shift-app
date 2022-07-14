@@ -1,0 +1,16 @@
+<% schedules.each do |schedule| %>
+  <div id="scheduleDetail<%= schedule.id%>" class="modal" role="dialog" tabindex="-1" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><%= schedule.employee.last_name %> <%= schedule.employee.first_name %></h4>
+          <button type="button" class="btn-close" scheduleId="<%= schedule.id %>"></button>
+        </div>
+        <div class="modal-body">
+          <p><%= schedule.starting_time.strftime("%Y/%m/%d %H:%M") %>〜<%= schedule.closing_time.strftime("%H:%M") %></p>
+          <%= link_to "欠勤申請", new_employee_schedule_absence_request_path(schedule), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

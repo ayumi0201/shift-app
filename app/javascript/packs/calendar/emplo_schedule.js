@@ -17,6 +17,10 @@ document.addEventListener('turbolinks:load', function() {
           end: 'today prev,next'
         },
         expandRows: true,
+        editable: true,
+        eventClick : function ( event ) {
+          $(`#scheduleDetail${event.event._def.publicId}`).show();
+        },
         stickyHeaderDates: true,
         buttonText: {
            today: '今日'
