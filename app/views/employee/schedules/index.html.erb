@@ -10,5 +10,7 @@
   </div>
   <div class="container py-3"></div>
   <div id='calendar'></div>
+  <%= render 'schedule_info', schedules: @schedules %>
   <%= javascript_pack_tag 'calendar/emplo_schedule' %>
+  <%= javascript_pack_tag 'calendar/close_modal' %>
 </div>
